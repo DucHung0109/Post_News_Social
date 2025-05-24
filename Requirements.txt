@@ -4,3 +4,7 @@ requests
 Pillow
 google-genai
 pymongo
+os
+datetime
+json
+re

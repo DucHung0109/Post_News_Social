@@ -1,4 +1,4 @@
-**FLOW:**
+**FLOW:** Run at 11:30 PM everyday, read new article of day and post Facebook
 - Take top headlines article by API of NewsAPI.
 - Delete articles saved more than 6 days.
 - Take posted articles, saved on MongoDB.
@@ -8,3 +8,8 @@
 - Generate general comments for all chosen articles in day.
 - Use Meta API to posted articles on FanPage FaceBook.
 - Save new articles on MongoDB.
+
+**FLOW 2:** Run at 7:00 AM everyday, read article of yesterday, which was saved on MongoDB after posted Facebook
+- Take articles from MongoDB
+- Read token to post Threads from MongoDB
+- Post article by Meta API
