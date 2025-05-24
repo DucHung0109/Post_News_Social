@@ -1,8 +1,9 @@
-# https://github.com/DucHung0109/Post_News_FanPage
+# https://github.com/DucHung0109/Post_News_Social
 
 from google import genai
 from google.genai import types
 import json
+import re
 
 def list_to_json(list_news: list):
     """
@@ -77,12 +78,17 @@ def news_unposted(client, prompt_config: str, prompt: str, model: str, list_json
     ]
     )
 
-    try:
-        return json.loads(response.text.strip("```").strip("json"))
-    except Exception as e:
-        print("Unexpected error:", type(e).__name__, e)
-        print("Response text:\n", response.text)
-        return []
+    match = re.search(r"\[\s*{.*?}\s*\]", response.text, re.DOTALL)
+
+    if match:
+        json_text = match.group(0)
+        try:
+            data = json.loads(json_text)
+            return data
+        except json.JSONDecodeError as e:
+            print("Lỗi khi parse JSON:", e)
+    else:
+        print("Không tìm thấy mảng JSON nào trong chuỗi.")
 
 def gen_content(client, prompt_config: str, prompt: str, model: str, list_json_news: str):
     """
@@ -108,9 +114,14 @@ def gen_content(client, prompt_config: str, prompt: str, model: str, list_json_n
     ]
     )   
 
-    try:
-        return json.loads(response.text.strip("```").strip("json"))
-    except Exception as e:
-        print("Unexpected error:", type(e).__name__, e)
-        print("Response text:\n", response.text)
-        return []
+    match = re.search(r"\[\s*{.*?}\s*\]", response.text, re.DOTALL)
+
+    if match:
+        json_text = match.group(0)
+        try:
+            data = json.loads(json_text)
+            return data
+        except json.JSONDecodeError as e:
+            print("Lỗi khi parse JSON:", e)
+    else:
+        print("Không tìm thấy mảng JSON nào trong chuỗi.")

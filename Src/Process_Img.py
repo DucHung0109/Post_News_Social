@@ -1,4 +1,4 @@
-# https://github.com/DucHung0109/Post_News_FanPage
+# https://github.com/DucHung0109/Post_News_Social
 
 import requests
 from PIL import Image

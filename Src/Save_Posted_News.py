@@ -1,4 +1,4 @@
-# https://github.com/DucHung0109/Post_News_FanPage
+# https://github.com/DucHung0109/Post_News_Social
 
 from datetime import datetime, timedelta
 from Get_News import News
@@ -15,14 +15,14 @@ def load_news(collection):
     result = []
     for doc in collection.find():
         news = {
-            "title": doc.title,
-            "content": doc.content,
-            "url": doc.url,
-            "img": doc.img,
-            "description": doc.description,
-            "comment": doc.comment,
-            "title_vn": doc.title_vn,
-            "content_vn": doc.content_vn
+            "title": doc['title'],
+            "content": doc['content'],
+            "url": doc['url'],
+            "img": doc['img'],
+            "description": doc['description'],
+            "comment": doc['comment'],
+            "title_vn": doc['title_vn'],
+            "content_vn": doc['content_vn']
         }
         
         result.append(news)

@@ -1,0 +1,38 @@
+name: Run Python script at 7:00 AM VN time
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  
+
+  workflow_dispatch:  # Cho phép chạy tay nếu cần
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 15
+
+    env:
+        USERNAME_MONGO: ${{ secrets.USERNAME_MONGO }}
+        PASSWORD_MONGO: ${{ secrets.PASSWORD_MONGO }}
+        ID_PAGE: ${{ secrets.ID_PAGE }}
+        PAGE_ACCESS_TOKEN: ${{ secrets.PAGE_ACCESS_TOKEN }}
+        NEWS_API: ${{ secrets.NEWS_API }}
+        GEMINI_API: ${{ secrets.GEMINI_API }}
+          
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r Requirements.txt
+
+      - name: Run Python script
+        run: python -u Src/Post_Threads.py
+        

@@ -1,4 +1,4 @@
-# https://github.com/DucHung0109/Post_News_FanPage
+# https://github.com/DucHung0109/Post_News_Social
 
 from newsapi import NewsApiClient
 
@@ -13,6 +13,10 @@ class News:
         self.img = img
         self.content = content  
         self.source = 'https://' + url[8:].split("/")[0]
+        self.title_vn = ""
+        self.content_vn = ""
+        self.description = ""
+        self.comment = ""
 
     def add_description(self, descrip):
         self.description = descrip

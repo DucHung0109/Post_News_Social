@@ -1,7 +1,6 @@
-# https://github.com/DucHung0109/Post_News_FanPage
+# https://github.com/DucHung0109/Post_News_Social
 
 import requests
-import json
 import datetime
 from Process_Img import load_image
 from Get_News import News
@@ -38,7 +37,9 @@ def post_news_page_facebook(list_news: list, id: str, page_access_token:str):
     
     Output: - str: Id of main post
     """
-    
+    if not isinstance(list_news, list):
+        list_news = [list_news]
+
     # Use UTC timezone, so must use the time we want to post minus 7 hours because Vietnam is UTC+7
     today = datetime.datetime.now()
     tomorrow = today + datetime.timedelta(days=1)
@@ -49,7 +50,7 @@ def post_news_page_facebook(list_news: list, id: str, page_access_token:str):
 
     photo_ids = []
     for i, news in enumerate(list_news):
-        MESSAGE += f"{i + 1}. {news.title_vn}\n{news.description}\n\n\n"
+        MESSAGE += f"{i + 1}. {news.title_vn}.\n\n{news.description}\n\n\n"
         if news.img is None:
             continue
         image = load_image(news.img, news.source)

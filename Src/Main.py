@@ -1,4 +1,4 @@
-# https://github.com/DucHung0109/Post_News_FanPage
+#https://github.com/DucHung0109/Post_News_Social
 
 from Get_News import *
 from Process_News import *
@@ -7,17 +7,25 @@ from Post_Page_Facebook import *
 from pymongo.mongo_client import MongoClient
 import os
 
+# Get news from NewsAPI
+news_api = os.environ["NEWS_API"]
+list_news = get_news(news_api)
+# Change into list of json object to input into Gemini
+list_news_json = list_to_json(list_news)
+
 # Connect to MongoDB by DataBase User
 username_mongo = os.environ["USERNAME_MONGO"]
 password_mongo = os.environ["PASSWORD_MONGO"]
 mongo_uri = f"mongodb+srv://{username_mongo}:{password_mongo}@postednews.nm9vqhx.mongodb.net/?retryWrites=true&w=majority&appName=PostedNews"
 client = MongoClient(mongo_uri)
 db = client['Post_News_FanPage']
-collection = db['postedNews_collection']
+postedNews_collection = db['postedNews_collection']
 
-# Get news from NewsAPI
-news_api = os.environ["NEWS_API"]
-list_news = get_news(news_api)
+# Delete articles saved more than 6 days
+delete_too_late_news(postedNews_collection)
+
+# Take posted articles
+list_news_posted_json = load_news(postedNews_collection)
 
 # Process news
 my_api_key = os.environ["GEMINI_API"]
@@ -52,8 +60,7 @@ prompt =  """
     ]
 """
 
-list_news_json = list_to_json(list_news)
-list_news_posted_json = load_news(collection)
+
 
 list_news_postable = news_unposted(client, prompt_config, prompt, models[0], list_news_json, list_news_posted_json)
 
@@ -250,11 +257,10 @@ id_page = os.environ["ID_PAGE"]
 page_access_token = os.environ["PAGE_ACCESS_TOKEN"]
 
 post_id = post_news_page_facebook(list_news, id_page, page_access_token)
-response = post_comment_facebook(general_comment, post_id, page_access_token)
+post_comment_facebook(general_comment, post_id, page_access_token)
 
 # Save posted news
 print("Save posted news")
-save_news(list_news, collection)
-delete_too_late_news(collection)
+save_news(list_news, postedNews_collection)
 
 print("DONE!")
