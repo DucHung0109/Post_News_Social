@@ -62,12 +62,19 @@ def post_news_threads(list_news: list, access_token: str):
 
         # Generate container for post
         create_url = f"{base_url}/me/threads"
-        payload = {
-            "media_type": "IMAGE",
-            "image_url": news['img'],
-            "text": message,
-            "access_token": access_token
-        }
+        if news['img']:
+            payload = {
+                "media_type": "IMAGE",
+                "image_url": news['img'],
+                "text": message,
+                "access_token": access_token
+            }
+        else:
+            payload = {
+                "media_type": "TEXT",
+                "text": message,
+                "access_token": access_token
+            }
         response = requests.post(create_url, data=payload)
         container_id = response.json().get("id")
         # Publish container(post status)
