@@ -63,6 +63,7 @@ def post_news_threads(list_news: list, access_token: str):
         # Generate container for post
         create_url = f"{base_url}/me/threads"
         if news['img']:
+            print(news['img'])
             payload = {
                 "media_type": "IMAGE",
                 "image_url": news['img'],
